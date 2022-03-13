@@ -1,0 +1,21 @@
+def decrypt(encrypted_text, n):
+    while n > 0:
+        crypt = []
+        c = 0
+        m = len(encrypted_text) // 2
+        while len(crypt) < len(encrypted_text):
+            crypt.append(encrypted_text[m])
+            crypt.append(encrypted_text[c])
+            c += 1
+            m += 1
+        encrypted_text = "".join(crypt[:len(encrypted_text)])
+        n -= 1
+    return encrypted_text
+
+
+def encrypt(text, n):
+    while n > 0:
+        crypt = f"{text[1::2]}{text[::2]}"
+        text = crypt
+        n -= 1
+    return text
