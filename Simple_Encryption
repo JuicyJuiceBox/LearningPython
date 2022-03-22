@@ -1,0 +1,68 @@
+def encrypt(text):
+    if text is None:
+        return None
+
+    up = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    low = list("abcdefghijklmnopqrstuvwxyz")
+    dig = list("0123456789")
+    spec = [".", ",", ":", ";", "-", "?", "!", " ", "'", "(", ")", "$", "%", "&", '"']
+    reg = list(up + low + dig + spec)
+
+    test = [t for t in text if t in reg]
+    if len(test) < len(text):
+        raise TypeError("Invalid Characters")
+
+    l_text = ""
+    n_text = ''
+
+    for l in text:
+        i = len(l_text)
+        if i % 2 == 1:
+            l_text += l.swapcase()
+        elif i % 2 == 0:
+            l_text += l
+
+    for s in range(len(l_text)):
+        ndx = reg.index(l_text[s - 1]) - reg.index(l_text[s])
+        if s == 0:
+            n_text += reg[-(reg.index(l_text[s]) + 1)]
+        else:
+            n_text += reg[ndx]
+
+    return n_text
+
+
+def decrypt(encrypted_text):
+    if encrypted_text is None:
+        return None
+
+    up = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    low = list("abcdefghijklmnopqrstuvwxyz")
+    dig = list("0123456789")
+    spec = [".", ",", ":", ";", "-", "?", "!", " ", "'", "(", ")", "$", "%", "&", '"']
+    reg = list(up + low + dig + spec)
+
+    test = [t for t in encrypted_text if t in reg]
+    if len(test) < len(encrypted_text):
+        raise TypeError("Invalid Characters")
+
+    l_text = ""
+    n_text = ''
+
+    for t in range(len(encrypted_text)):
+        if t == 0:
+            n_text += reg[-(reg.index(encrypted_text[0]) + 1)]
+        if t > 0:
+            n = reg.index(encrypted_text[t]) - reg.index(n_text[-1])
+            if n > 77:
+                n -= 77
+            n_text += reg[-n]
+
+    for l in n_text:
+        i = len(l_text)
+        if i % 2 == 1:
+            l_text += l.swapcase()
+        elif i % 2 == 0:
+            l_text += l
+
+    return l_text
